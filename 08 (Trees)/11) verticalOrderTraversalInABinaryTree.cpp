@@ -64,3 +64,33 @@ Vertical  Level    Element
 // Isme map wala insert ar last ka traversal analyse karna hai
 // Basically map dikh kaisa raha hai wo dry run karna hai
 
+//DFS approch for this problem ----
+
+https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/discuss/260502/C%2B%2B-BFSDFS
+
+
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, map<int, set<int>>> nodes;
+        traverse(root, 0, 0, nodes);
+        vector<vector<int>> ans;
+        for (auto p : nodes) {
+            vector<int> col;
+            for (auto q : p.second) {
+                col.insert(col.end(), q.second.begin(), q.second.end());
+            }
+            ans.push_back(col);
+        }
+        return ans;
+    }
+private:
+//this function is traversing through the tree in DFS and storing the values of x and y in the nodes.
+    void traverse(TreeNode* root, int x, int y, map<int, map<int, set<int>>>& nodes) {
+        if (root) {
+            nodes[x][y].insert(root -> val);
+            traverse(root -> left, x - 1, y + 1, nodes);
+            traverse(root -> right, x + 1, y + 1, nodes);
+        }
+    }
+};
